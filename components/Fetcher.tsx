@@ -6,6 +6,9 @@ export async function scraper(url: string, keyword?: string): Promise<object> {
 		},
 		body: JSON.stringify({ data: keyword }),
 	});
+
 	const res_json = await res.json();
+	console.log(res_json);
+
 	return res_json;
 }
