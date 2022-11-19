@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react";
+import { Icon, InlineIcon } from "@iconify/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
 interface TweetBoxProps {
@@ -29,10 +29,13 @@ export default function TweetBox({ setKeyword }: TweetBoxProps) {
 				value={tweet}
 				onChange={handleChange}
 			/>
-			<div className="flex">
-				<div className="flex-1">{`${tweet.length} / 280`}</div>
-				<button className="bg-slate-400 rounded-full p-2 hover:bg-slate-600">
-					<Icon icon="akar-icons:copy" className="text-xl text-white" />
+			<div className="flex items-center">
+				<div className="ml-auto pr-3 border-r-slate-600 border-r-2">{`${tweet.length} / 280`}</div>
+				<button className="bg-white hover:bg-slate-200 rounded-full w-8 h-8 mx-2">
+					<InlineIcon icon="bx:copy" className="inline text-lg"/>
+				</button>
+				<button className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-6 font-semibold">
+					SEARCH
 				</button>
 			</div>
 		</div>
