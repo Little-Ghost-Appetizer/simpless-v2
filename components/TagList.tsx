@@ -23,13 +23,16 @@ function BadgeList({ keyword }: BadgeListProps) {
 
 	useEffect(() => {
 		mutate();
+		console.log("MUTATING")
 	}, [keyword, mutate]);
 
 	return (
-		<div className="space-y-4 flex-col flex-wrap">
-			{data && !isValidating && !error ? (
+		<div className="space-y-4 flex-col flex-wrap flex-grow">
+			{!keyword ? (
+				<div className="text-center h-full"> Enter a tweet </div>
+			) : res?.keywords && !isValidating && !error ? (
 				res.keywords.map((t: any, idx: number) => {
-					return <Badge className="mr-4" key={idx} label={t} type="keyword" />;
+					return <Badge className="" key={idx} idx={idx} label={t} type="keyword" />;
 				})
 			) : (
 				<div className="text-center">

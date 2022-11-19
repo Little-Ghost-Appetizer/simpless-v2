@@ -13,11 +13,11 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="flex flex-col h-full xs:flex-row sm:flex-row">
-				<div className="shadow-md bg-white rounded-2xl m-12 p-6 w-3/5 h-2/3 flex-col">
+			<main className="flex flex-col md:flex-row h-full">
+				<div className="shadow-md bg-white rounded-2xl m-12 p-6 md:w-1/2 lg:w-3/5 w-auto">
 					<TweetBox setKeyword={setKeyword} />
 				</div>
-				<div className="bg-slate-200 flex-col flex-1 p-6">
+				<div className="bg-slate-200 flex flex-col flex-1 p-6">
 					<h2 className="text-4xl m-4"> Tags / Keywords </h2>
 					<BadgeList keyword={keyword} />
 				</div>

@@ -23,9 +23,9 @@ export default function TweetBox({ setKeyword }: TweetBoxProps) {
 	}, [setKeyword, tweet]);
 
 	return (
-		<div>
+		<div className="w-auto h-auto">
 			<textarea
-				className="w-full mb-4 p-4 h-1/2 border-gray-500 border outline-1"
+				className="w-full h-full mb-4 p-4 h-1/2 border-gray-500 border outline-1"
 				value={tweet}
 				onChange={handleChange}
 			/>
