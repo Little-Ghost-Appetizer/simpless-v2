@@ -16,9 +16,21 @@ export default function Home() {
 
 			<main className="flex flex-col md:flex-row h-full">
 				<TweetBox setTweet={setTweet} selectedKeywords={selectedKeywords}/>
-				<div className="bg-slate-200 flex flex-col flex-1 p-6">
-					<h2 className="text-2xl mb-2 md:text-4xl md:my-4"> Related Keywords </h2>
-					<TagList tweet={tweet} setSelectedKeywords={setSelectedKeywords}/>
+				<div className="bg-slate-200 flex flex-col flex-1 p-6 lg:p-12">
+					{
+						tweet ? (		
+							<TagList tweet={tweet} setSelectedKeywords={setSelectedKeywords}/>
+						) : (
+							<div className="pt-16 text-center">
+								<h1 className="text-4xl mb-4"> Simpless </h1>
+								<p className="text-2xl mb-24">
+									Come up with the right hashtags to market your products.
+								</p>
+								<p> Start by typing a tweet </p>
+							</div>
+						)
+					}
+
 				</div>
 			</main>
 		</div>

@@ -34,9 +34,9 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 
 	return (
 		<>
-			{!tweet ? (
-				<div className="text-center  mt-16"> Enter a tweet first </div>
-			) : res?.keywords && !isValidating && !error ? (
+			{res?.keywords && !isValidating && !error ? (
+				<>
+				<div className="text-lg mb-2 md:text-xl md:my-4"> In this context, people are talking about... </div>
 				<div className="space-y-3 md:space-y-4 flex-col flex-wrap flex-grow">
 					{res.keywords.map((t: any, idx: number) => {
 						return (
@@ -50,6 +50,7 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 						);
 					})}
 				</div>
+				</>
 			) : (
 				<div className="flex flex-col mt-16">
 					<span className="text-lg text-center mb-2">
