@@ -8,13 +8,18 @@ module.exports = {
 	theme: {
 		extend: {
 			keyframes: {
-				fadeIn: {
+				'fade-in': {
 					"0%": { opacity: '0', transform: 'translateY(10%)'},
 					"100%": { opacity: '1', transform: 'translateY(0%)'},
 				},
+				'fade-out': {
+					"0%": { opacity: '1', transform: 'translateY(0%)'},
+					"100%": { opacity: '0', transform: 'translateY(10%)'},
+				},
 			},
 			animation: {
-				'fade-in': "fadeIn .5s ease-in",
+				'fade-in': "fade-in .5s ease-in",
+				'fade-out': "fade-out .5s ease-in"
 			},
 		},
 	},
