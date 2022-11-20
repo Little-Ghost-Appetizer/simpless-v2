@@ -1,10 +1,11 @@
-import Badge from "./Tag";
+import Tag from "./Tag";
 import { scraper } from "./Fetcher";
 import useSWR, { mutate, useSWRConfig } from "swr";
 import { useEffect } from "react";
 
-interface BadgeListProps {
-	keyword?: string;
+interface TagListProps {
+	tweet?: string;
+	setSelectedKeywords: Function;
 }
 
 interface ResponseType {
@@ -12,33 +13,39 @@ interface ResponseType {
 }
 
 const mockUrl = "https://6377ed020992902a2513e93a.mockapi.io/word";
+const url = "http://127.0.0.1:5000"
 
-function BadgeList({ keyword }: BadgeListProps) {
+function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 	const { data, mutate, error, isValidating } = useSWR(
-		keyword ? mockUrl : null,
-		(url) => scraper(url, keyword),
+		tweet ? mockUrl : null,
+		(url) => scraper(url, tweet),
 		{ revalidateOnFocus: false }
 	);
 	const res = data as ResponseType;
 
 	useEffect(() => {
 		mutate();
-	}, [keyword, mutate]);
+		setSelectedKeywords([])
+	}, [tweet, mutate, setSelectedKeywords]);
+
+	// useEffect(() => {
+	// 	if(res) setSelectedKeywords(res.keywords)
+	// }, [setSelectedKeywords, res]);
 
 	return (
 		<>
-			{!keyword ? (
-				<div className="text-center h-full"> Enter a tweet </div>
+			{!tweet ? (
+				<div className="text-center  mt-16"> Enter a tweet first </div>
 			) : res?.keywords && !isValidating && !error ? (
-				<div className="space-y-4 flex-col flex-wrap flex-grow">
+				<div className="space-y-3 md:space-y-4 flex-col flex-wrap flex-grow">
 					{res.keywords.map((t: any, idx: number) => {
 						return (
-							<Badge
+							<Tag
 								className=""
 								key={idx}
 								idx={idx}
 								label={t}
-								type="keyword"
+								setSelectedKeywords={setSelectedKeywords}
 							/>
 						);
 					})}

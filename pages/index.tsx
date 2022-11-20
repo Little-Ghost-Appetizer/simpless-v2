@@ -1,10 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
-import BadgeList from "../components/TagList";
+import TagList from "../components/TagList";
 import TweetBox from "../components/TweetBox";
 
 export default function Home() {
-	const [keyword, setKeyword] = useState("");
+	const [tweet, setTweet] = useState<string>("");
+	const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
 	return (
 		<div className="h-screen bg-slate-400">
 			<Head>
@@ -14,10 +15,10 @@ export default function Home() {
 			</Head>
 
 			<main className="flex flex-col md:flex-row h-full">
-				<TweetBox setKeyword={setKeyword} />
+				<TweetBox setTweet={setTweet} selectedKeywords={selectedKeywords}/>
 				<div className="bg-slate-200 flex flex-col flex-1 p-6">
-					<h2 className="text-2xl md:text-4xl my-4"> Tags / Keywords </h2>
-					<BadgeList keyword={keyword} />
+					<h2 className="text-2xl mb-2 md:text-4xl md:my-4"> Related Keywords </h2>
+					<TagList tweet={tweet} setSelectedKeywords={setSelectedKeywords}/>
 				</div>
 			</main>
 		</div>
