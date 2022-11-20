@@ -14,11 +14,9 @@ export default function Home() {
 			</Head>
 
 			<main className="flex flex-col md:flex-row h-full">
-				<div className="shadow-md bg-white rounded-2xl m-12 p-6 md:w-1/2 lg:w-3/5 w-auto">
-					<TweetBox setKeyword={setKeyword} />
-				</div>
+				<TweetBox setKeyword={setKeyword} />
 				<div className="bg-slate-200 flex flex-col flex-1 p-6">
-					<h2 className="text-4xl m-4"> Tags / Keywords </h2>
+					<h2 className="text-2xl md:text-4xl my-4"> Tags / Keywords </h2>
 					<BadgeList keyword={keyword} />
 				</div>
 			</main>
