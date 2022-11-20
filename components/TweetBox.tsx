@@ -75,7 +75,7 @@ export default function TweetBox({
 						</button>
 						<Toast text={"Tweet copied to clipboard!"} shouldShow={showToast} setShouldShow={setShowToast}/>
 					</div>
-					<button className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold">
+					<button onClick={() => setTweet(tweetText)} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold">
 						SEARCH
 					</button>
 				</div>
