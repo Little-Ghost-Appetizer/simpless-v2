@@ -1,25 +1,26 @@
-import { Icon, InlineIcon } from "@iconify/react";
-import { useState } from "react";
+import { InlineIcon } from "@iconify/react";
+import { useEffect, useState } from "react";
 
-interface BadgeProps {
+interface TagProps {
 	label: string;
 	className: string;
 	idx: number;
-	setSelectedKeywords: Function;
+	tweet?: string;
+	onClick: Function;
 }
 
-function Badge({ label, className, idx, setSelectedKeywords }: BadgeProps) {
+function Tag({ label, className, idx, tweet, onClick }: TagProps) {
 	const [isSelected, setIsSelected] = useState(false);
+
+	useEffect(() => {
+	  if(!tweet) return
+	  setIsSelected(tweet.includes(label)) 
+	}, [label, tweet])
+	
 	return (
 		<div
 			style={{ animationDelay: `${idx / 30}s` }}
-			onClick={() => {
-				setIsSelected(!isSelected);
-				setSelectedKeywords((oldState: string[]) => {
-					if(oldState.includes(label)) return oldState.filter((v) => v !== label) 
-					else return [...oldState, label] 
-				});
-			}}
+			onClick={() => onClick(label)}
 			className={`opacity-0 rounded-3xl mr-2 bg-white inline-flex text-sm md:text-base font-semibold p-1 px-2 md:p-2 md:px-3 cursor-pointer 
 			select-none animate-fade-in [animation-fill-mode:forwards] transition-colors ${className} ${
 				isSelected
@@ -50,4 +51,4 @@ function Badge({ label, className, idx, setSelectedKeywords }: BadgeProps) {
 	);
 }
 
-export default Badge;
+export default Tag;

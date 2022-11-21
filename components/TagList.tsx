@@ -1,11 +1,13 @@
 import Tag from "./Tag";
 import { scraper } from "./Fetcher";
-import useSWR, { mutate, useSWRConfig } from "swr";
+import useSWR from "swr";
 import { useEffect } from "react";
 
 interface TagListProps {
 	tweet?: string;
-	setSelectedKeywords: Function;
+	setTweet: Function;
+	shouldSearch: boolean;
+	setShouldSearch: Function;
 }
 
 interface ResponseType {
@@ -15,7 +17,7 @@ interface ResponseType {
 const mockUrl = "https://6377ed020992902a2513e93a.mockapi.io/word";
 const url = "http://127.0.0.1:5000"
 
-function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
+function TagList({ tweet, setTweet, shouldSearch, setShouldSearch }: TagListProps) {
 	const { data, mutate, error, isValidating } = useSWR(
 		tweet ? mockUrl : null,
 		(url) => scraper(url, tweet),
@@ -23,10 +25,20 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 	);
 	const res = data as ResponseType;
 
+	function handleClick(label: string){
+		if(tweet?.includes(label)){
+			setTweet(tweet.replace(' ' + label, ''))
+		}
+		else{
+			setTweet(tweet + ' ' + label)
+		}
+	}
+
+
 	useEffect(() => {
-		mutate();
-		setSelectedKeywords([])
-	}, [tweet, mutate, setSelectedKeywords]);
+		if(shouldSearch) mutate();
+		setShouldSearch(false);
+	}, [mutate, setShouldSearch, shouldSearch]);
 
 	// useEffect(() => {
 	// 	if(res) setSelectedKeywords(res.keywords)
@@ -36,7 +48,7 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 		<>
 			{res?.keywords && !isValidating && !error ? (
 				<>
-				<div className="text-lg mb-2 md:text-xl md:mb-4"> In this context, people are talking about... </div>
+				<div className="text-lg mb-2 mt-4 md:text-xl md:mb-4"> In this context, people are talking about... </div>
 				<div className="space-y-3 md:space-y-4 flex-col flex-wrap flex-grow">
 					{res.keywords.map((t: any, idx: number) => {
 						return (
@@ -45,7 +57,8 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 								key={idx}
 								idx={idx}
 								label={t}
-								setSelectedKeywords={setSelectedKeywords}
+								onClick={handleClick}
+								tweet={tweet}
 							/>
 						);
 					})}
@@ -63,4 +76,4 @@ function BadgeList({ tweet, setSelectedKeywords }: TagListProps) {
 	);
 }
 
-export default BadgeList;
+export default TagList;

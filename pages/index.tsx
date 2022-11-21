@@ -1,12 +1,22 @@
 import Head from "next/head";
-import { useState } from "react";
-import { createContext } from "vm";
+import { useEffect, useState } from "react";
 import TagList from "../components/TagList";
 import TweetBox from "../components/TweetBox";
 
 export default function Home() {
+	const [shouldSearch, setShouldSearch] = useState(false);
 	const [tweet, setTweet] = useState<string>("");
-	const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+	const [autoSearch, setAutoSearch] = useState(false);
+
+	useEffect(() =>{
+		let timer = setTimeout(() => {
+			if (autoSearch) setShouldSearch(true);
+		}, 1000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [autoSearch, tweet])
 
 	return (
 		<div className="h-screen bg-[#f3f3f3]">
@@ -17,23 +27,33 @@ export default function Home() {
 			</Head>
 
 			<main className="flex flex-col md:flex-row h-full">
-				<TweetBox setTweet={setTweet} selectedKeywords={selectedKeywords}/>
+				<TweetBox
+					autoSearch={autoSearch}
+					setAutoSearch={setAutoSearch}
+					setShouldSearch={setShouldSearch}
+					tweet={tweet}
+					setTweet={setTweet}
+				/>
 				<div className="bg-gray-50 flex flex-col flex-1 p-6 lg:p-12">
-					{
-						tweet ? (		
-							<TagList tweet={tweet} setSelectedKeywords={setSelectedKeywords}/>
-						) : (
-							<div className="pt-16 text-blue-600">
-								<h1 className="text-4xl mb-4 font-semibold"> SIMPLESS </h1>
-								<p className="text-2xl mb-16">
-									Come up with the right hashtags to market your products.
-								</p>
-							</div>
-						)
-					}
-
+					{tweet ? (
+						<TagList
+							shouldSearch={shouldSearch}
+							setShouldSearch={setShouldSearch}
+							tweet={tweet}
+							setTweet={setTweet} 
+						/>
+					) : (
+						<div className="pt-8 text-blue-600">
+							<h1 className="text-4xl mb-4 font-semibold"> SIMPLESS </h1>
+							<p className="text-2xl mb-16">
+								Come up with the right hashtags to market your products.
+							</p>
+						</div>
+					)}
 				</div>
-				<div className="absolute left-2 bottom-2 text-xs"> © 2022 All rights reserved </div>
+				<div className="absolute left-2 bottom-2 text-xs">
+					© 2022 All rights reserved
+				</div>
 			</main>
 		</div>
 	);

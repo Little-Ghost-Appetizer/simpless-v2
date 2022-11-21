@@ -1,31 +1,24 @@
 import { Icon, InlineIcon } from "@iconify/react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import Toast from './Toast'
 import TweetTextArea from "./TweetTextArea";
 interface TweetBoxProps {
+	tweet: string;
 	setTweet: Function;
-	selectedKeywords: string[];
+	setShouldSearch: Function;
+	autoSearch: boolean;
+	setAutoSearch: Function;
 }
 
 export default function TweetBox({
+	tweet,
 	setTweet,
-	selectedKeywords,
+	setShouldSearch,
+	autoSearch,
+	setAutoSearch
 }: TweetBoxProps) {
-	const [tweetText, setTweetText] = useState("");
-	const [autoSearch, setAutoSearch] = useState(true);
 	const [showToast, setShowToast] = useState(false);
-
-	useEffect(() => {
-		let timer = setTimeout(() => {
-			if (autoSearch) setTweet(tweetText);
-		}, 1000);
-
-		return () => {
-			clearTimeout(timer);
-		};
-	}, [autoSearch, setTweet, tweetText]);
-
 
 	return (
 		<div className="flex flex-row shadow-md bg-white rounded-2xl m-4 p-4 md:w-1/2 md:p-6 lg:w-3/5 md:m-12 w-auto space-x-2">
@@ -39,7 +32,7 @@ export default function TweetBox({
 					<hr className="select-none w-16 m-auto border-t-blue-600 mx-1" />
 					<InlineIcon icon="mdi:chevron-down" inline className="inline" />
 				</div>
-				<TweetTextArea tweetText={tweetText} setTweetText={setTweetText} selectedKeywords={selectedKeywords}/>
+				<TweetTextArea tweet={tweet} setTweet={setTweet}/>
 
 				{/* <div className="flex flex-row flex-wrap  text-xs text-blue-600">
 					{selectedKeywords.length > 0 && (
@@ -52,14 +45,14 @@ export default function TweetBox({
 					)}
 				</div> */}
 				<div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-1	">
-					<ToggleSwitch setChecked={setAutoSearch} />
+					<ToggleSwitch checked={autoSearch} setChecked={setAutoSearch} />
 					<div className="ml-auto flex">
-						<div className="text-sm md:text-base  pr-2 border-r-slate-600 border-r-2">{`${tweetText.length} / 280`}</div>
+						<div className="text-sm md:text-base  pr-2 border-r-slate-600 border-r-2">{`${tweet.length} / 280`}</div>
 						<button
 							className="bg-white hover:bg-slate-200 rounded-full w-6 h-6 mx-2"
 							onClick={() => {
 								navigator.clipboard.writeText(
-									tweetText + "\n" + selectedKeywords.join(" ")
+									tweet
 								)
 								setShowToast(true);
 							}}
@@ -68,7 +61,7 @@ export default function TweetBox({
 						</button>
 						<Toast text={"Tweet copied to clipboard!"} shouldShow={showToast} setShouldShow={setShowToast}/>
 					</div>
-					<button onClick={() => setTweet(tweetText)} disabled={tweetText ? false: true} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]">
+					<button onClick={() => setShouldSearch(true)} disabled={tweet ? false: true} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]">
 						SEARCH
 					</button>
 				</div>
