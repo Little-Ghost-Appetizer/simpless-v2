@@ -35,11 +35,11 @@ export default function TweetBox({
 			<Icon
 				icon="ph:user-circle-light"
 				width="48"
-				className="flex text-blue-100"
+				className="flex text-blue-600"
 			/>
 			<div className="flex flex-col mt-3 flex-grow space-y-2">
-				<div className="flex flex-row rounded-full p-0.5 pr-1 px-2 flex-shrink w-fit border border-blue-200 text-blue-200">
-					<hr className="select-none w-16 m-auto border-t-blue-200 mx-1" />
+				<div className="flex flex-row rounded-full p-0.5 pr-1 px-2 flex-shrink w-fit border border-blue-600 text-blue-600">
+					<hr className="select-none w-16 m-auto border-t-blue-600 mx-1" />
 					<InlineIcon icon="mdi:chevron-down" inline className="inline" />
 				</div>
 				<textarea
@@ -75,7 +75,7 @@ export default function TweetBox({
 						</button>
 						<Toast text={"Tweet copied to clipboard!"} shouldShow={showToast} setShouldShow={setShowToast}/>
 					</div>
-					<button onClick={() => setTweet(tweetText)} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold">
+					<button onClick={() => setTweet(tweetText)} disabled={tweetText ? false: true} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]">
 						SEARCH
 					</button>
 				</div>

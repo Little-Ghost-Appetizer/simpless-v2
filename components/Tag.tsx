@@ -28,18 +28,25 @@ function Badge({ label, className, idx, setSelectedKeywords }: BadgeProps) {
 					: "bg-white hover:bg-slate-300"
 			}`}
 		>
-			{isSelected ? (
+			{!isSelected ? (
 				<InlineIcon
-					icon="akar-icons:cross"
+					icon="akar-icons:plus"
+					height="16"
 					className="text-xs self-center rounded-full mr-1"
 				/>
 			) : (
-				<InlineIcon
-					icon="akar-icons:plus"
-					className="text-xs self-center rounded-full mr-1"
-				/>
+				<></>
 			)}
 			<span>{label}</span>
+			{isSelected ? (
+				<InlineIcon
+					icon="akar-icons:cross"
+					height="16"
+					className="text-xs self-center rounded-full ml-1"
+				/>
+			) : (
+				<></>
+			)}
 		</div>
 	);
 }
