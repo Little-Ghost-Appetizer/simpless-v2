@@ -16,7 +16,6 @@ function Badge({ label, className, idx, setSelectedKeywords }: BadgeProps) {
 			onClick={() => {
 				setIsSelected(!isSelected);
 				setSelectedKeywords((oldState: string[]) => {
-					console.log(oldState, label, oldState.includes(label))
 					if(oldState.includes(label)) return oldState.filter((v) => v !== label) 
 					else return [...oldState, label] 
 				});

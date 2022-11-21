@@ -1,11 +1,13 @@
 import Head from "next/head";
 import { useState } from "react";
+import { createContext } from "vm";
 import TagList from "../components/TagList";
 import TweetBox from "../components/TweetBox";
 
 export default function Home() {
 	const [tweet, setTweet] = useState<string>("");
 	const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+
 	return (
 		<div className="h-screen bg-[#f3f3f3]">
 			<Head>

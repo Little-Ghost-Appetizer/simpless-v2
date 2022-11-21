@@ -2,6 +2,7 @@ import { Icon, InlineIcon } from "@iconify/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import Toast from './Toast'
+import TweetTextArea from "./TweetTextArea";
 interface TweetBoxProps {
 	setTweet: Function;
 	selectedKeywords: string[];
@@ -14,10 +15,6 @@ export default function TweetBox({
 	const [tweetText, setTweetText] = useState("");
 	const [autoSearch, setAutoSearch] = useState(true);
 	const [showToast, setShowToast] = useState(false);
-
-	function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
-		setTweetText(e.target.value.substring(0, 280));
-	}
 
 	useEffect(() => {
 		let timer = setTimeout(() => {
@@ -42,13 +39,9 @@ export default function TweetBox({
 					<hr className="select-none w-16 m-auto border-t-blue-600 mx-1" />
 					<InlineIcon icon="mdi:chevron-down" inline className="inline" />
 				</div>
-				<textarea
-					className="w-full max-h-[80%] mb-4 p-2 border-slate-200 border-b-2 outline-0"
-					value={tweetText}
-					onChange={handleChange}
-					placeholder="Type tweet here ..."
-				/>
-				<div className="flex flex-row flex-wrap  text-xs text-blue-600">
+				<TweetTextArea tweetText={tweetText} setTweetText={setTweetText} selectedKeywords={selectedKeywords}/>
+
+				{/* <div className="flex flex-row flex-wrap  text-xs text-blue-600">
 					{selectedKeywords.length > 0 && (
 						<>
 							<div className="w-full font-medium"> Keyword(s) to be added </div>
@@ -57,7 +50,7 @@ export default function TweetBox({
 							</div>
 						</>
 					)}
-				</div>
+				</div> */}
 				<div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-1	">
 					<ToggleSwitch setChecked={setAutoSearch} />
 					<div className="ml-auto flex">
