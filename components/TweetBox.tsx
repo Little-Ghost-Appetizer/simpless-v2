@@ -1,7 +1,7 @@
 import { Icon, InlineIcon } from "@iconify/react";
-import { useState } from "react";
+import { MutableRefObject, useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
-import Toast from './Toast'
+import Toast from "./Toast";
 import TweetTextArea from "./TweetTextArea";
 interface TweetBoxProps {
 	tweet: string;
@@ -9,6 +9,7 @@ interface TweetBoxProps {
 	setShouldSearch: Function;
 	autoSearch: boolean;
 	setAutoSearch: Function;
+	searchStarted: MutableRefObject<boolean>;
 }
 
 export default function TweetBox({
@@ -16,7 +17,8 @@ export default function TweetBox({
 	setTweet,
 	setShouldSearch,
 	autoSearch,
-	setAutoSearch
+	setAutoSearch,
+	searchStarted,
 }: TweetBoxProps) {
 	const [showToast, setShowToast] = useState(false);
 
@@ -32,7 +34,7 @@ export default function TweetBox({
 					<hr className="select-none w-16 m-auto border-t-blue-600 mx-1" />
 					<InlineIcon icon="mdi:chevron-down" inline className="inline" />
 				</div>
-				<TweetTextArea tweet={tweet} setTweet={setTweet}/>
+				<TweetTextArea tweet={tweet} setTweet={setTweet} />
 
 				{/* <div className="flex flex-row flex-wrap  text-xs text-blue-600">
 					{selectedKeywords.length > 0 && (
@@ -51,17 +53,26 @@ export default function TweetBox({
 						<button
 							className="bg-white hover:bg-slate-200 rounded-full w-6 h-6 mx-2"
 							onClick={() => {
-								navigator.clipboard.writeText(
-									tweet
-								)
+								navigator.clipboard.writeText(tweet);
 								setShowToast(true);
 							}}
 						>
 							<InlineIcon icon="bx:copy" className="inline text-lg" />
 						</button>
-						<Toast text={"Tweet copied to clipboard!"} shouldShow={showToast} setShouldShow={setShowToast}/>
+						<Toast
+							text={"Tweet copied to clipboard!"}
+							shouldShow={showToast}
+							setShouldShow={setShowToast}
+						/>
 					</div>
-					<button onClick={() => setShouldSearch(true)} disabled={tweet ? false: true} className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]">
+					<button
+						onClick={() => {
+							setShouldSearch(true);
+							searchStarted.current = true;
+						}}
+						disabled={tweet ? false : true}
+						className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]"
+					>
 						SEARCH
 					</button>
 				</div>

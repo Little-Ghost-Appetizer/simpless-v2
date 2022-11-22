@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TagList from "../components/TagList";
 import TweetBox from "../components/TweetBox";
 import Image from "next/image"
@@ -8,11 +8,15 @@ export default function Home() {
 	const [shouldSearch, setShouldSearch] = useState(false);
 	const [tweet, setTweet] = useState<string>("");
 	const [autoSearch, setAutoSearch] = useState(false);
+	const searchStarted = useRef(false)
 
 	useEffect(() =>{
 		let timer = setTimeout(() => {
-			if (autoSearch) setShouldSearch(true);
-		}, 1000);
+			if (autoSearch){
+				setShouldSearch(true);
+				searchStarted.current = true;
+			}
+		}, 2000);
 
 		return () => {
 			clearTimeout(timer);
@@ -32,11 +36,12 @@ export default function Home() {
 					autoSearch={autoSearch}
 					setAutoSearch={setAutoSearch}
 					setShouldSearch={setShouldSearch}
+					searchStarted={searchStarted}
 					tweet={tweet}
 					setTweet={setTweet}
 				/>
 				<div className="bg-gradient-to-br to-cyan-500 from-blue-300 bg-opacity-90 flex flex-col flex-1 p-6 lg:p-12 lg:py-6 overflow-y-scroll">
-					{tweet ? (
+					{searchStarted.current ? (
 						<TagList
 							shouldSearch={shouldSearch}
 							setShouldSearch={setShouldSearch}
