@@ -22,7 +22,7 @@ function Tag({ label, className, idx, tweet, onClick }: TagProps) {
 			style={{ animationDelay: `${idx / 30}s` }}
 			onClick={() => onClick(label)}
 			className={`opacity-0 rounded-3xl mr-2 bg-white inline-flex text-sm md:text-base font-semibold p-1 px-2 md:p-2 md:px-3 cursor-pointer 
-			select-none animate-fade-in [animation-fill-mode:forwards] transition-colors ${className} ${
+			select-none animate-fade-in [animation-fill-mode:forwards] transition-colors shadow-sm ${className} ${
 				isSelected
 					? "bg-blue-700 hover:bg-blue-600 text-white"
 					: "bg-white hover:bg-slate-300"
