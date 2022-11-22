@@ -7,13 +7,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cloudflare-ipfs.com',
-        port: '',
         pathname: '/ipfs/**',
       },
       {
         protocol: 'https',
         hostname: 'pbs.twimg.com',
-        port: '',
         pathname: '/**',
       },
     ],

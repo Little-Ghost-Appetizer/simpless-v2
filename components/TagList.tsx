@@ -19,7 +19,7 @@ interface ResponseType {
 
 const mockUrl = "https://6377ed020992902a2513e93a.mockapi.io/word";
 const localUrl = "http://127.0.0.1:5000";
-const url = "http://223.130.134.246:5000/api/simplesssearch";
+const url = "https://223.130.134.246:5000/api/simplesssearch";
 
 function TagList({
 	tweet,
