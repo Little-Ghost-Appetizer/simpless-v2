@@ -1,55 +1,56 @@
 import { Icon, InlineIcon } from "@iconify/react";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import Toast from "./Toast";
 import TweetTextArea from "./TweetTextArea";
-import useSWR, { mutate } from "swr";
-import { initFetcher, continueFetcher, simplessUrl, ResponseType } from "./Fetcher";
+import useSWR, { Fetcher, mutate } from "swr";
+import { simplessUrl } from "./Fetcher";
 interface TweetBoxProps {
 	tweet: string;
 	setTweet: Function;
-	searchStarted: MutableRefObject<boolean>;
+	setSearchResult: Function;
+	setFetchStarted: Function;
 }
 
 export default function TweetBox({
 	tweet,
 	setTweet,
-	searchStarted,
+	setSearchResult,
+	setFetchStarted,
 }: TweetBoxProps) {
 	const [showToast, setShowToast] = useState(false);
 	const [autoSearch, setAutoSearch] = useState(false);
-	const [fetcher, setFetcher] = useState<Function>(() => {})
-	const [shouldSearch, setShouldSearch] = useState(false);
 
-	const { data, mutate, error, isValidating } = useSWR(
-		simplessUrl,
-		(url) => fetcher(url, tweet),
-		{
-			revalidateOnFocus: false,
-			onSuccess: (data: ResponseType, key: any, config: any) => {
-				if(!data.finished){
-					setFetcher(continueFetcher)
-					mutate()
-				}
-				else{
-					setFetcher(() => {})
-				}
-			},
+	const search = useCallback(async () => {
+		console.log("STARTING FETCH");
+		setFetchStarted(true);
+		setSearchResult({})
+		try {
+			const res = await fetch(simplessUrl, {
+				method: "POST",
+				headers: {
+					"content-type": "application/json; version=2",
+				},
+				body: JSON.stringify({
+					search_keyword: tweet,
+					continue: false,
+					upper_round: 3,
+					upper_count: 2,
+				}),
+			});
+			const res_json = await res.json();
+			setSearchResult(res_json);
+		} catch (err) {
+			console.log(err);
 		}
-	);
-	
-	useEffect(() =>{
-		let timer = setTimeout(() => {
-			if (autoSearch){
-				searchStarted.current = true;
-				mutate();
-			}
-		}, 2000);
+	}, [setFetchStarted, setSearchResult, tweet]);
 
-		return () => {
-			clearTimeout(timer);
-		};
-	}, [autoSearch, mutate, searchStarted, tweet])
+	useEffect(() => {
+		let timer = setTimeout(() => {
+			if (autoSearch) search();
+		}, 2000);
+		return () => clearTimeout(timer);
+	}, [autoSearch, search]);
 
 	return (
 		<div className="flex flex-row shadow-md bg-white rounded-2xl m-4 p-4 md:w-1/2 md:p-6 lg:w-3/5 md:m-12 w-auto space-x-2">
@@ -84,7 +85,7 @@ export default function TweetBox({
 						/>
 					</div>
 					<button
-						onClick={() => { setShouldSearch(true); setFetcher(initFetcher);}}
+						onClick={() => search()}
 						disabled={tweet ? false : true}
 						className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]"
 					>
