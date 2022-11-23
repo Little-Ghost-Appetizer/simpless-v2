@@ -24,8 +24,8 @@ export default async function handler(
 				"content-type": "application/json; version=2",
 			},
 			body: JSON.stringify({
-				search_keyword: req.query.search_keyword === 'true',
-				continue: req.query.continue,
+				search_keyword: req.query.search_keyword,
+				continue: req.query.continue  === 'true',
 				upper_round: 3,
 				upper_count: 1,
 			}),
