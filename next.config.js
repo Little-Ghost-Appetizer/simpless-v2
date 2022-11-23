@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  httpAgentOptions: {
+    rejectUnauthorized: false,
+  },
   images: {
     remotePatterns: [
       {
