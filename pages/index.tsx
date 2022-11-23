@@ -9,9 +9,9 @@ import { SearchResult } from "../components/Fetcher";
 
 export default function Home() {
 	const [tweet, setTweet] = useState<string>("");
-	const [searchResult, setSearchResult] = useState<SearchResult>();
+	const [searchResult, setSearchResult] = useState<SearchResult>({finished: true});
 	const [fetchStarted, setFetchStarted] = useState(false);
-
+	
 	return (
 		<div className="h-screen bg-gradient-to-br from-sky-50 to-sky-200">
 			<Head>

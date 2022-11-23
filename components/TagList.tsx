@@ -4,9 +4,9 @@ import useSWR from "swr";
 import { useCallback, useEffect } from "react";
 import Image from "next/image";
 interface TagListProps {
-	tweet?: string;
+	tweet: string;
 	setTweet: Function;
-	searchResult?: SearchResult;
+	searchResult: SearchResult;
 	setSearchResult: Function;
 }
 
@@ -25,38 +25,37 @@ function TagList({
 		}
 	}
 
-	const continueCalling = useCallback(async () => {
-		try{
-			const res = await fetch(simplessUrl, {
-				method: "POST",
-				headers: {
-					"content-type": "application/json; version=2",
-				},
-				body: JSON.stringify({
-					search_keyword: tweet,
-					continue: true,
-					upper_round: 3,
-					upper_count: 2,
-				}),
-			});
-			const res_json = await res.json();
-			setSearchResult(res_json);
-		}
-		catch(err) { 
-		}
-
-	}, [setSearchResult, tweet]);
-
 	useEffect(() => {
-		if(searchResult && !searchResult.finished){
-			continueCalling()
+		async function continueSearch(){
+			console.log(searchResult)
+			if (!searchResult.finished) {
+				if(Object.keys(searchResult).length === 0) return;
+				console.log("CONTINUE CALLED")
+				const searchParams = new URLSearchParams({
+					continue: 'true',
+					search_keyword: tweet,
+				});
+				const res = await fetch("api/searchTweet?" + searchParams);
+				const res_json = await res.json();
+				setSearchResult(res_json);
+			}
 		}
-	}
-	, [continueCalling, searchResult, setSearchResult])
+		continueSearch()
+	}, [searchResult]);
 
 	return (
 		<>
-			{searchResult && searchResult.finished ? (
+			{!searchResult || !searchResult.finished ? (
+				<div className="flex flex-col mt-16">
+					<span className="text-lg font-bold text-white text-center">
+						Searching for keywords
+					</span>
+					<span className="text-md text-white text-center mb-2">
+						this should take about 2-5 minutes
+					</span>
+					<div className="animate-spin inline-block w-8 h-8 border-4 rounded-full border-white border-t-blue-400 m-auto" />
+				</div>
+			) : searchResult.finished && !searchResult.error ? (
 				<>
 					{/* Tags */}
 					<div className="text-lg mb-2 mt-4 md:text-xl md:mb-4 text-white font-semibold">
@@ -114,7 +113,10 @@ function TagList({
 											height={32}
 										/>
 										<div className="flex flex-col">
-											<span className="inline-flex items-center text-blue-300 font-medium"> {`@${p.user_account}`} </span>
+											<span className="inline-flex items-center text-blue-300 font-medium">
+												{" "}
+												{`@${p.user_account}`}{" "}
+											</span>
 											<span className="text-sm"> {p.content} </span>
 										</div>
 									</div>
@@ -123,19 +125,7 @@ function TagList({
 						})}
 					</div>
 				</>
-			): !searchResult?.finished ? (
-				<div className="flex flex-col mt-16">
-					<span className="text-lg font-bold text-white text-center">
-						Searching for keywords
-					</span>
-					<span className="text-md text-white text-center mb-2">
-						this should take about 10-20 minutes
-					</span>
-					<div className="animate-spin inline-block w-8 h-8 border-4 rounded-full border-white border-t-blue-400 m-auto" />
-				</div>
-				
-			):
-			(
+			) : (
 				<div className="flex flex-col mt-16">
 					<span className="text-lg font-bold text-white text-center mb-2">
 						Result not found! Try searching a new tweet

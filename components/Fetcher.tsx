@@ -8,4 +8,5 @@ export interface SearchResult {
 	users?: { profile_image_url: string; user_account: string }[];
 	posts?: object[];
 	finished: boolean;
+	error?: any;
 }

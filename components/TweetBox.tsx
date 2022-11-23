@@ -5,6 +5,7 @@ import Toast from "./Toast";
 import TweetTextArea from "./TweetTextArea";
 import useSWR, { Fetcher, mutate } from "swr";
 import { simplessUrl } from "./Fetcher";
+import { updatePartiallyEmittedExpression } from "typescript";
 interface TweetBoxProps {
 	tweet: string;
 	setTweet: Function;
@@ -22,25 +23,16 @@ export default function TweetBox({
 	const [autoSearch, setAutoSearch] = useState(false);
 
 	const search = useCallback(async () => {
+		console.log("SEARCH CALLED")
 		setFetchStarted(true);
 		setSearchResult({})
-		try {
-			const res = await fetch(simplessUrl, {
-				method: "POST",
-				headers: {
-					"content-type": "application/json; version=2",
-				},
-				body: JSON.stringify({
-					search_keyword: tweet,
-					continue: false,
-					upper_round: 3,
-					upper_count: 2,
-				}),
-			});
-			const res_json = await res.json();
-			setSearchResult(res_json);
-		} catch (err) {
-		}
+		const searchParams = new URLSearchParams({
+			continue: 'false',
+			search_keyword: tweet
+		})
+		const res = await fetch('api/searchTweet?' + searchParams)
+		const res_json = await res.json();
+		setSearchResult(res_json);
 	}, [setFetchStarted, setSearchResult, tweet]);
 
 	useEffect(() => {
