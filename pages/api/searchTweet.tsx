@@ -24,10 +24,10 @@ export default async function handler(
 				"content-type": "application/json; version=2",
 			},
 			body: JSON.stringify({
-				search_keyword: req.query.search_keyword,
+				search_keyword: req.query.search_keyword === 'true',
 				continue: req.query.continue,
-				upper_round: 1,
-				upper_count: 3,
+				upper_round: 3,
+				upper_count: 1,
 			}),
 		});
 		const data_json = await data.json();

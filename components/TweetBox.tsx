@@ -30,9 +30,14 @@ export default function TweetBox({
 			continue: 'false',
 			search_keyword: tweet
 		})
-		const res = await fetch('api/searchTweet?' + searchParams)
-		const res_json = await res.json();
-		setSearchResult(res_json);
+		try{
+			const res = await fetch("api/searchTweet?" + searchParams);
+			const res_json = await res.json();
+			setSearchResult(res_json);
+		}
+		catch(err){
+			setSearchResult({finished: false});
+		}
 	}, [setFetchStarted, setSearchResult, tweet]);
 
 	useEffect(() => {
