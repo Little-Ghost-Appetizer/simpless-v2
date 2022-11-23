@@ -6,26 +6,11 @@ import Image from "next/image";
 interface TagListProps {
 	tweet?: string;
 	setTweet: Function;
-	shouldSearch: boolean;
-	setShouldSearch: Function;
 }
-
-interface ResponseType {
-	keywords: string[];
-	users: { profile_image_url: string; user_account: string }[];
-	posts: object[];
-	finished: boolean;
-}
-
-const mockUrl = "https://6377ed020992902a2513e93a.mockapi.io/word";
-const localUrl = "http://127.0.0.1:5000";
-const url = "https://223.130.134.246:5000/api/simplesssearch";
 
 function TagList({
 	tweet,
 	setTweet,
-	shouldSearch,
-	setShouldSearch,
 }: TagListProps) {
 	var isFetchFinished = false;
 	const { data, mutate, error, isValidating } = useSWR(
@@ -43,7 +28,7 @@ function TagList({
 		}
 	);
 	const res = data as ResponseType;
-
+	console.log(res)
 	function handleClick(label: string) {
 		if (tweet?.includes(label)) {
 			setTweet(tweet.replace(" " + label, ""));
@@ -63,7 +48,7 @@ function TagList({
 
 	return (
 		<>
-			{res?.finished && res.keywords && !isValidating && !error ? (
+			{res?.finished && res.keywords ? (
 				<>
 					{/* Tags */}
 					<div className="text-lg mb-2 mt-4 md:text-xl md:mb-4 text-white font-semibold">
@@ -130,14 +115,7 @@ function TagList({
 						})}
 					</div>
 				</>
-			) : res?.finished && !res.keywords ? (
-				<div className="flex flex-col mt-16">
-					<span className="text-lg font-bold text-white text-center mb-2">
-						Result not found! Try searching a new tweet
-					</span>
-				</div>
-			):
-			(
+			): isValidating ? (
 				<div className="flex flex-col mt-16">
 					<span className="text-lg font-bold text-white text-center">
 						Searching for keywords
@@ -146,6 +124,14 @@ function TagList({
 						this should take about 10-20 minutes
 					</span>
 					<div className="animate-spin inline-block w-8 h-8 border-4 rounded-full border-white border-t-blue-400 m-auto" />
+				</div>
+				
+			):
+			(
+				<div className="flex flex-col mt-16">
+					<span className="text-lg font-bold text-white text-center mb-2">
+						Result not found! Try searching a new tweet
+					</span>
 				</div>
 			)}
 		</>

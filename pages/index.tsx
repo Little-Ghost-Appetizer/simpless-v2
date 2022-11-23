@@ -4,11 +4,19 @@ import TagList from "../components/TagList";
 import TweetBox from "../components/TweetBox";
 import Image from "next/image"
 
+
+
 export default function Home() {
 	const [shouldSearch, setShouldSearch] = useState(false);
 	const [tweet, setTweet] = useState<string>("");
 	const [autoSearch, setAutoSearch] = useState(false);
 	const searchStarted = useRef(false)
+	const tagList = <TagList
+		shouldSearch={shouldSearch}
+		setShouldSearch={setShouldSearch}
+		tweet={tweet}
+		setTweet={setTweet} 
+	/>
 
 	useEffect(() =>{
 		let timer = setTimeout(() => {
@@ -42,12 +50,7 @@ export default function Home() {
 				/>
 				<div className="bg-gradient-to-br to-cyan-500 from-blue-300 bg-opacity-90 flex flex-col flex-1 p-6 lg:p-12 lg:py-6 overflow-y-scroll">
 					{searchStarted.current ? (
-						<TagList
-							shouldSearch={shouldSearch}
-							setShouldSearch={setShouldSearch}
-							tweet={tweet}
-							setTweet={setTweet} 
-						/>
+						tagList
 					) : (
 						<div className="pt-8 text-white">
 							<h1 className="text-6xl mb-4 font-semibold text-white"> SIMPLESS </h1>

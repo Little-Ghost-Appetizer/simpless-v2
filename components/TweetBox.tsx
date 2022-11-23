@@ -1,26 +1,55 @@
 import { Icon, InlineIcon } from "@iconify/react";
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import Toast from "./Toast";
 import TweetTextArea from "./TweetTextArea";
+import useSWR, { mutate } from "swr";
+import { initFetcher, continueFetcher, simplessUrl, ResponseType } from "./Fetcher";
 interface TweetBoxProps {
 	tweet: string;
 	setTweet: Function;
-	setShouldSearch: Function;
-	autoSearch: boolean;
-	setAutoSearch: Function;
 	searchStarted: MutableRefObject<boolean>;
 }
 
 export default function TweetBox({
 	tweet,
 	setTweet,
-	setShouldSearch,
-	autoSearch,
-	setAutoSearch,
 	searchStarted,
 }: TweetBoxProps) {
 	const [showToast, setShowToast] = useState(false);
+	const [autoSearch, setAutoSearch] = useState(false);
+	const [fetcher, setFetcher] = useState<Function>(() => {})
+	const [shouldSearch, setShouldSearch] = useState(false);
+
+	const { data, mutate, error, isValidating } = useSWR(
+		simplessUrl,
+		(url) => fetcher(url, tweet),
+		{
+			revalidateOnFocus: false,
+			onSuccess: (data: ResponseType, key: any, config: any) => {
+				if(!data.finished){
+					setFetcher(continueFetcher)
+					mutate()
+				}
+				else{
+					setFetcher(() => {})
+				}
+			},
+		}
+	);
+	
+	useEffect(() =>{
+		let timer = setTimeout(() => {
+			if (autoSearch){
+				searchStarted.current = true;
+				mutate();
+			}
+		}, 2000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [autoSearch, mutate, searchStarted, tweet])
 
 	return (
 		<div className="flex flex-row shadow-md bg-white rounded-2xl m-4 p-4 md:w-1/2 md:p-6 lg:w-3/5 md:m-12 w-auto space-x-2">
@@ -35,17 +64,6 @@ export default function TweetBox({
 					<InlineIcon icon="mdi:chevron-down" inline className="inline" />
 				</div>
 				<TweetTextArea tweet={tweet} setTweet={setTweet} />
-
-				{/* <div className="flex flex-row flex-wrap  text-xs text-blue-600">
-					{selectedKeywords.length > 0 && (
-						<>
-							<div className="w-full font-medium"> Keyword(s) to be added </div>
-							<div className="max-w-fit break-words">
-								{selectedKeywords.join(", ")}
-							</div>
-						</>
-					)}
-				</div> */}
 				<div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-1	">
 					<ToggleSwitch checked={autoSearch} setChecked={setAutoSearch} />
 					<div className="ml-auto flex">
@@ -66,10 +84,7 @@ export default function TweetBox({
 						/>
 					</div>
 					<button
-						onClick={() => {
-							setShouldSearch(true);
-							searchStarted.current = true;
-						}}
+						onClick={() => { setShouldSearch(true); setFetcher(initFetcher);}}
 						disabled={tweet ? false : true}
 						className="text-white bg-blue-700 hover:bg-blue-900 rounded-full p-2 px-4 font-semibold disabled:bg-[#858585]"
 					>
