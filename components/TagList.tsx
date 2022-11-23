@@ -26,7 +26,6 @@ function TagList({
 	}
 
 	const continueCalling = useCallback(async () => {
-		console.log("CONTINUE FETCH")
 		try{
 			const res = await fetch(simplessUrl, {
 				method: "POST",
@@ -44,7 +43,6 @@ function TagList({
 			setSearchResult(res_json);
 		}
 		catch(err) { 
-			console.log(err) 
 		}
 
 	}, [setSearchResult, tweet]);

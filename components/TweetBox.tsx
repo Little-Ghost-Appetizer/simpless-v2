@@ -22,7 +22,6 @@ export default function TweetBox({
 	const [autoSearch, setAutoSearch] = useState(false);
 
 	const search = useCallback(async () => {
-		console.log("STARTING FETCH");
 		setFetchStarted(true);
 		setSearchResult({})
 		try {
@@ -41,7 +40,6 @@ export default function TweetBox({
 			const res_json = await res.json();
 			setSearchResult(res_json);
 		} catch (err) {
-			console.log(err);
 		}
 	}, [setFetchStarted, setSearchResult, tweet]);
 
