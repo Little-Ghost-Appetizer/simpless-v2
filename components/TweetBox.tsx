@@ -23,7 +23,7 @@ export default function TweetBox({
 	const [autoSearch, setAutoSearch] = useState(false);
 
 	const search = useCallback(async () => {
-		console.log("SEARCH CALLED")
+		// console.log("SEARCH CALLED")
 		setFetchStarted(true);
 		setSearchResult({})
 		const searchParams = new URLSearchParams({

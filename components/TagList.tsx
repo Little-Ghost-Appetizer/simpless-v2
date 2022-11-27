@@ -27,10 +27,10 @@ function TagList({
 
 	useEffect(() => {
 		async function continueSearch(){
-			console.log(searchResult)
+			// console.log(searchResult)
 			if (!searchResult.finished) {
 				if(Object.keys(searchResult).length === 0) return;
-				console.log("CONTINUE CALLED")
+				// console.log("CONTINUE CALLED")
 				const searchParams = new URLSearchParams({
 					continue: 'true',
 					search_keyword: tweet,
@@ -60,7 +60,7 @@ function TagList({
 					</span>
 					<div className="animate-spin inline-block w-8 h-8 border-4 rounded-full border-white border-t-blue-400 m-auto" />
 				</div>
-			) : searchResult.finished && !searchResult.error ? (
+			) : searchResult.finished && searchResult.keywords ? (
 				<>
 					{/* Tags */}
 					<div className="text-lg mb-2 mt-4 md:text-xl md:mb-4 text-white font-semibold">
@@ -119,8 +119,7 @@ function TagList({
 										/>
 										<div className="flex flex-col">
 											<span className="inline-flex items-center text-blue-300 font-medium">
-												{" "}
-												{`@${p.user_account}`}{" "}
+												{`@${p.user_account}`}
 											</span>
 											<span className="text-sm"> {p.content} </span>
 										</div>
