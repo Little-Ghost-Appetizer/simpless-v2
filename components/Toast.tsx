@@ -29,7 +29,7 @@ function Toast({ shouldShow, setShouldShow, text }: ToastProps) {
 		<div
 			id="toast"
 			className={`${
-				isShow ? "opacity-1 bottom-5" : "opacity-0 bottom-0"
+				isShow ? "opacity-1 center" : "opacity-0"
 			} transition-all absolute max-w-xs flex items-center p-4 w-1/2 left-1/3 -translate-x-1/2 bg-slate-300 rounded-lg drop-shadow-xl z-50`}
 			role="alert"
 		>
