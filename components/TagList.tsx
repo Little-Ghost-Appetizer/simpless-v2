@@ -88,7 +88,7 @@ function TagList({
 						{searchResult.users?.map((u: any, idx: number) => {
 							return (
 								<div className="-z-[idx] w-fit m-0 " key={idx}>
-									<a href={"https://twitter.com/" + u.user_account}>
+									<a href={"https://twitter.com/" + u.user_account} rel="noopener noreferrer" target="_blank">
 										<Image
 											className="rounded-full flex drop-shadow-lg	"
 											src={u.profile_image_url}
@@ -108,7 +108,7 @@ function TagList({
 					<div className="flex flex-col">
 						{searchResult.posts?.map((p: any, idx: number) => {
 							return (
-								<a key={idx} href={p.url}>
+								<a key={idx} target="_blank" rel="noopener noreferrer" href={p.url}>
 									<div className="flex flex-row items-center m-2 mb-4 p-2 px-4 rounded-lg bg-gray-50 shadow-md w-full">
 										<Image
 											className="rounded-full mr-3 h-8"
