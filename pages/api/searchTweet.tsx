@@ -29,7 +29,7 @@ export default async function handler(
 			search_keyword: search_keyword,
 			upper_round: "3",
 			upper_count: "1",
-			num_tags: "1",
+			num_tags: "10",
 		});
 
 		if(search_keyword === "selling shirts") {
