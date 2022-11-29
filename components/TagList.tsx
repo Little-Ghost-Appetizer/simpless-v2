@@ -56,7 +56,7 @@ function TagList({
 						Searching for keywords
 					</span>
 					<span className="text-md text-white text-center mb-2">
-						this should take about 2-5 minutes
+						this should take about 5-10 minutes
 					</span>
 					<div className="animate-spin inline-block w-8 h-8 border-4 rounded-full border-white border-t-blue-400 m-auto" />
 				</div>
